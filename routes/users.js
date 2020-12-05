@@ -9,12 +9,10 @@ router.route('/signin').post(async (req, res) => {
 
   // res.json(req.body)
 
-
   try{
     const {username, password} = req.body;
-      const user = await User.findOne({username: username});
-
-      if(!user){
+    const user = await User.findOne({username: username});
+      if(!user && username && password){
         // create account
             // password hashing
             const salt = await bcrypt.genSalt();
@@ -35,8 +33,8 @@ router.route('/signin').post(async (req, res) => {
                             }
                         }) 
               }).catch(err => res.status(400).json('Error: ' + err));    
-      } else {
-          // if account with username exists, check password
+      } else if (user) {
+        // if account with username exists, check password
         const isMatch = await bcrypt.compare(password, user.password);
         // if passwords match, sign in and create web token
           if(!isMatch){
@@ -51,6 +49,8 @@ router.route('/signin').post(async (req, res) => {
                 }
             })  
           }     
+      } else {
+        res.json({ msg: "idk bruh"})
       }
   } catch (error) {
     res.status(500).json({error: error.message})

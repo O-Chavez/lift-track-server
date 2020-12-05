@@ -7,7 +7,7 @@ const workoutRouter = require('./routes/workouts');
 
 require('dotenv').config();
 
-
+var PORT = process.env.PORT || 3001;
 
 const app = express();
 
@@ -15,14 +15,16 @@ app.use(express.json())
 app.use(cors());
 
 app.get('/', (req, res) => {
-  res.send('hello to LiftTracker API!');
+  res.send('Hello to LiftTracker API!');
 })
 
 
 const uri = process.env.ATLAS_URI;
 
 // CHANGE FOR DEPLOYMENT!!!
-mongoose.connect(uri, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true, useFindAndModify: false });
+mongoose.connect(uri, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true, useFindAndModify: false })
+  .then(() => app.listen(PORT, () => console.log(`Server running on ${PORT}`)))
+  .catch((error) => console.log(error.message));
 
 const connection = mongoose.connection;
 connection.once('open', () => {
@@ -34,8 +36,8 @@ app.use('/users', usersRouter);
 app.use('/lifts', liftsRouter);
 
 
-var PORT = process.env.PORT || 3001;
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}...`);
-})
+
+// app.listen(PORT, () => {
+//   console.log(`Server is running on port ${PORT}...`);
+// })
