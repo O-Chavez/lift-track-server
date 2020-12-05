@@ -18,11 +18,8 @@ app.get('/', (req, res) => {
   res.send('Hello to LiftTracker API!');
 })
 
-
-const uri = process.env.ATLAS_URI;
-
 // CHANGE FOR DEPLOYMENT!!!
-mongoose.connect(uri, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true, useFindAndModify: false })
+mongoose.connect(process.env.ATLAS_URI, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true, useFindAndModify: false })
   .then(() => app.listen(PORT, () => console.log(`Server running on ${PORT}`)))
   .catch((error) => console.log(error.message));
 
