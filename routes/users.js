@@ -7,56 +7,54 @@ const auth = require('../middleware/auth');
 // MAKE MAIN LOG IN ROUTE
 router.route('/signin').post(async (req, res) => {
 
-  res.json(req.body)
-  // try{
-  //   const {username, password} = req.body;
-  //     const user = await User.findOne({username: username});
+  // res.json(req.body)
 
-  //     if(!user){
-  //       // create account
-  //           // password hashing
-  //           const salt = await bcrypt.genSalt();
-  //           const passwordHash = await bcrypt.hash(password, salt);
-  //           // create new mongo User
-  //           const newUser = new User({username: username, password: passwordHash});
 
-  //           await newUser.save()
-  //             .then(async () => {
-  //               const newlySignInUser = await User.findOne({username: username});
-  //               // get token for newly created user
-  //               const token = jwt.sign({id: newlySignInUser._id}, process.env.JWT_SECRET)
-  //               res.json({
-  //                           token,
-  //                           user: {
-  //                             id: newlySignInUser._id,
-  //                             username: newlySignInUser.username
-  //                           }
-  //                       }) 
-  //             })
-  //             .catch(err => res.status(400).json('Error: ' + err));
+  try{
+    const {username, password} = req.body;
+      const user = await User.findOne({username: username});
 
-              
-              
-  //     } else {
-  //         // if account with username exists, check password
-  //       const isMatch = await bcrypt.compare(password, user.password);
-  //       // if passwords match, sign in and create web token
-  //         if(!isMatch){
-  //           return res.status(400).json({ msg: "Invalid credentials... Password and email on file do not match..."})
-  //         } else {
-  //           const token = jwt.sign({id: user._id}, process.env.JWT_SECRET)
-  //             res.json({
-  //               token,
-  //               user: {
-  //                 id: user._id,
-  //                 username: user.username
-  //               }
-  //           })  
-  //         }     
-  //     }
-  // } catch (error) {
-  //   res.status(500).json({error: error.message})
-  // }
+      if(!user){
+        // create account
+            // password hashing
+            const salt = await bcrypt.genSalt();
+            const passwordHash = await bcrypt.hash(password, salt);
+            // create new mongo User
+            const newUser = new User({username: username, password: passwordHash});
+
+            await newUser.save()
+              .then(async () => {
+                const newlySignInUser = await User.findOne({username: username});
+                // get token for newly created user
+                const token = jwt.sign({id: newlySignInUser._id}, process.env.JWT_SECRET)
+                res.json({
+                            token,
+                            user: {
+                              id: newlySignInUser._id,
+                              username: newlySignInUser.username
+                            }
+                        }) 
+              }).catch(err => res.status(400).json('Error: ' + err));    
+      } else {
+          // if account with username exists, check password
+        const isMatch = await bcrypt.compare(password, user.password);
+        // if passwords match, sign in and create web token
+          if(!isMatch){
+            return res.status(400).json({ msg: "Invalid credentials... Password and email on file do not match..."})
+          } else {
+            const token = jwt.sign({id: user._id}, process.env.JWT_SECRET)
+              res.json({
+                token,
+                user: {
+                  id: user._id,
+                  username: user.username
+                }
+            })  
+          }     
+      }
+  } catch (error) {
+    res.status(500).json({error: error.message})
+  }
   
 });
 
