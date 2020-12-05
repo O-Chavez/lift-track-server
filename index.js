@@ -12,9 +12,9 @@ const app = express();
 app.use(express.json())
 app.use(cors());
 
-// app.get('/', (req, res) => {
-//   res.send('hello to LiftTracker API!');
-// })
+app.get('/', (req, res) => {
+  res.send('hello to LiftTracker API!');
+})
 
 
 const uri = process.env.ATLAS_URI;
