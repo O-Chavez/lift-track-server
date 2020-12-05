@@ -7,6 +7,8 @@ const workoutRouter = require('./routes/workouts');
 
 require('dotenv').config();
 
+
+
 const app = express();
 
 app.use(express.json())
