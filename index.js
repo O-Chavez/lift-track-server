@@ -9,14 +9,12 @@ require('dotenv').config();
 
 const app = express();
 
-const LiftModel = require('./models/Lifts');
-
 app.use(express.json())
 app.use(cors());
 
-app.get('/', (req, res) => {
-  res.send('hello to LiftTracker API!');
-})
+// app.get('/', (req, res) => {
+//   res.send('hello to LiftTracker API!');
+// })
 
 
 const uri = process.env.ATLAS_URI;
