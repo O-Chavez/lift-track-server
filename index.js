@@ -11,8 +11,10 @@ var PORT = process.env.PORT || 3001;
 
 const app = express();
 
+
 app.use(express.json())
 app.use(cors());
+app.use(express.static('public'));
 
 app.get('/', (req, res) => {
   res.send('Hello to LiftTracker API!');
