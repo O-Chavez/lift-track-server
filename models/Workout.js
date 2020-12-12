@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 
 const WorkoutSchema = new mongoose.Schema({
-
   userId: {
     type: String,
     required: true
@@ -30,7 +29,6 @@ const WorkoutSchema = new mongoose.Schema({
       type: Number,
       require: true
   }
-  
 });
 
 const Workout = mongoose.model("Workout", WorkoutSchema);
