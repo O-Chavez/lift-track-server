@@ -6,10 +6,10 @@ const WorkoutSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  // liftId: {
-  //   type: String,
-  //   required: true
-  // },
+  liftRPE: {
+    type: String,
+    required: true
+  },
   liftDate: {
     type: Date,
     required: true
@@ -23,6 +23,10 @@ const WorkoutSchema = new mongoose.Schema({
       required: true
   },
     liftWeight: {
+      type: Number,
+      require: true
+  },
+    liftVolume: {
       type: Number,
       require: true
   }

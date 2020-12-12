@@ -78,17 +78,21 @@ router.route('/edit/:id').put(auth, async (req, res) => {
 router.route('/update/:id').post(auth, async (req, res) => {
   try{
     // create new workout with new data   
-    const { liftdate, liftsets, liftreps, liftweight } = req.body;
+    const { liftdate, liftsets, liftreps, liftweight, liftRPE } = req.body;
+
+    const liftVolume = liftsets * liftreps * liftweight;
       // validation
-    if(!liftdate || !liftsets || !liftreps || !liftweight) {
+    if(!liftdate || !liftsets || !liftreps || !liftweight || !liftRPE) {
       return res.status(400).json({ msg: "Not all fields have been entered."});
     }
     const newWorkout = new Workout({
       userId: req.user,
+      liftRPE: liftRPE,
       liftDate: liftdate,
       liftReps: liftreps,
       liftSets: liftsets,
-      liftWeight: liftweight
+      liftWeight: liftweight,
+      liftVolume: liftVolume
     });
     newWorkout.save();
     // get current lift

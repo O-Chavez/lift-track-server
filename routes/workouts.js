@@ -4,8 +4,6 @@ const Lift = require('../models/Lifts');
 const auth = require('../middleware/auth');
 const mongoose = require('mongoose');
 
-// get user workouts
-
 // get workouts from lift
 router.route('/:ids').get(auth, async (req, res) => {
   try {
@@ -26,20 +24,29 @@ router.route('/:ids').get(auth, async (req, res) => {
 // add workout 
 router.route('/add').post(auth, async (req, res) => {
   try {
-    const { liftdate, liftsets, liftreps, liftweight } = req.body;
-    if(!liftDate || !liftsets || !liftreps || !liftweight) 
+    const { liftdate, liftsets, liftreps, liftweight, liftRpe } = req.body;
+
+    const liftVolume = liftsets * liftreps * liftweight;
+
+    res.json(liftVolume);
+
+    if(!liftDate || !liftsets || !liftreps || !liftweight || !liftRpe) 
       return res.status(400).json({ msg: "Not all fields have been entered."});
     
     const newWorkout = new Workout({
       userId: req.user,
+      liftRpe: liftRpe, 
       liftDate: liftdate,
       liftReps: liftreps,
       liftSets: liftsets,
-      liftWeight: liftweight
+      liftWeight: liftweight,
+      liftVolume: liftVolume
     });
 
   const savedWorkout = await newWorkout.save();
-    res.json(savedWorkout);
+
+    res.json(req);
+    // res.json(savedWorkout);
   } catch (error) {
     res.status(500).json({ error: error.message});
   } 
